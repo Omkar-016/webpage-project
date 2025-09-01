@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Electronics Ecommerce</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <nav>
+    <a href="/products">Home</a>
+    <% if (userId) { %>
+      <a href="/cart">Cart</a>
+      <a href="/orders">Orders</a>
+      <a href="/auth/logout">Logout</a>
+    <% } else { %>
+      <a href="/auth/login">Login</a>
+      <a href="/auth/register">Register</a>
+    <% } %>
+  </nav>
+  <div>
+    <%- body %>
+  </div>
+</body>
+</html>

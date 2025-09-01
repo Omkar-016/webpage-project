@@ -1,0 +1,19 @@
+<% layout('layout') -%>
+
+<h2>Your Cart</h2>
+
+<% if (cartItems.length === 0) { %>
+  <p>Your cart is empty.</p>
+<% } else { %>
+  <ul>
+    <% cartItems.forEach(item => { %>
+      <li>
+        <strong><%= item.name %></strong> - Quantity: <%= item.quantity %> - Subtotal: $<%= item.price * item.quantity %>
+      </li>
+    <% }) %>
+  </ul>
+
+  <form method="POST" action="/orders/checkout">
+    <button type="submit">Checkout</button>
+  </form>
+<% } %>

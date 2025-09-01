@@ -1,0 +1,19 @@
+<% layout('layout') -%>
+
+<h2>Your Orders</h2>
+
+<% if (orders.length === 0) { %>
+  <p>No orders placed yet.</p>
+<% } else { %>
+  <% orders.forEach(order => { %>
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <p><strong>Date:</strong> <%= new Date(order.date).toLocaleString() %></p>
+      <p><strong>Total:</strong> $<%= order.total %></p>
+      <ul>
+        <% order.products.forEach(p => { %>
+          <li>Product ID: <%= p.productId %> - Quantity: <%= p.quantity %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% }) %>
+<% } %>

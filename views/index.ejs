@@ -1,0 +1,22 @@
+<%- layout('layout') %>
+
+
+<h1>All Products</h1>
+
+<ul>
+  <% products.forEach(product => { %>
+    <li>
+      <h3><%= product.name %></h3>
+      <p><%= product.description %></p>
+      <p>Price: $<%= product.price %></p>
+      <% if (userId) { %>
+        <form action="/cart/add" method="POST">
+          <input type="hidden" name="productId" value="<%= product._id %>">
+          <button>Add to Cart</button>
+        </form>
+      <% } else { %>
+        <p><a href="/auth/login">Login to buy</a></p>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>
