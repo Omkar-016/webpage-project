@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const path = require('path');
+const expressLayouts = require('express-ejs-layouts'); 
 
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
@@ -12,12 +13,15 @@ const orderRoutes = require('./routes/orders');
 
 const app = express();
 
+// Connect to MongoDB
 connectDB();
-app.set('views', './views');
-app.set('view engine', 'ejs');
+
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Session setup
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -28,15 +32,13 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-
+// EJS setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.set('layout', 'layout');
+app.use(expressLayouts); 
+app.set('layout', 'layout'); 
 
-// Make userId available in all templates
+// Make userId available in all views
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId;
   next();
@@ -48,10 +50,11 @@ app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', orderRoutes);
 
-// Home page redirects to /products
+// Redirect root to /products
 app.get('/', (req, res) => {
-    res.redirect('/products');
+  res.redirect('/products');
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
